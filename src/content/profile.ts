@@ -7,8 +7,8 @@ export const person = {
   last: "Mohapatra",
   role: "Software Engineer",
   location: "Delhi NCR, India",
-  statement: "I build AI agents that run in production, and voice AI you can interrupt.",
-  email: null as string | null, // reserved for hello@piyush-mptra.com once mail is set up
+  statement: "I build AI systems for work where a wrong answer is expensive.",
+  email: "hello@piyush-mptra.com" as string | null, // Cloudflare Email Routing forwards this to Gmail
 };
 
 export const links = [
@@ -52,7 +52,8 @@ export type Project = {
   stack: string[];
   links: { label: string; href: string }[];
   status?: string;
-  shot?: "advaita" | "invoiceguard";
+  shot?: "advaita" | "invoiceguard" | "agent" | "awaaz";
+  illustration?: boolean; // true when the image is a drawn scene, not a screenshot
   featured: boolean;
 };
 
@@ -97,6 +98,8 @@ export const projects: Project[] = [
     slug: "agent-browser-layer",
     name: "Agent Browser Layer",
     kind: "Browser control for agents",
+    shot: "agent",
+    illustration: true,
     year: "2026",
     featured: true,
     line: "Lets an LLM agent read a live web page and click, type and navigate on it.",
@@ -111,6 +114,8 @@ export const projects: Project[] = [
     slug: "awaaz",
     name: "Awaaz",
     kind: "Voice layer for Paytm POS",
+    shot: "awaaz",
+    illustration: true,
     year: "2026",
     status: "3rd · Paytm x Sarvam AI",
     featured: true,

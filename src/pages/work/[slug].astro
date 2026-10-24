@@ -9,7 +9,7 @@ export function getStaticPaths() {
 const { p } = Astro.props as { p: Project };
 ---
 <Base title={`${p.name} · Piyush Mohapatra`} description={p.line}>
-  <CaseStudy name={p.name} kind={p.kind} year={p.year} status={p.status} line={p.line} stack={p.stack} links={p.links} shot={p.shot}>
+  <CaseStudy name={p.name} kind={p.kind} year={p.year} status={p.status} line={p.line} stack={p.stack} links={p.links} shot={p.shot} illustration={p.illustration}>
     {p.body.map((para) => <p>{para}</p>)}
   </CaseStudy>
 </Base>
