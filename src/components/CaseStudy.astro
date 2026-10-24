@@ -1,10 +1,15 @@
 ---
+import { Image } from "astro:assets";
 import Kinetic from "./Kinetic.astro";
+import advaita from "../assets/shots/advaita.jpg";
+import invoiceguard from "../assets/shots/invoiceguard.jpg";
+
 interface Props {
   name: string; kind: string; year: string; status?: string; line: string;
-  stack: string[]; links: { label: string; href: string }[];
+  stack: string[]; links: { label: string; href: string }[]; shot?: "advaita" | "invoiceguard";
 }
-const { name, kind, year, status, line, stack, links } = Astro.props;
+const { name, kind, year, status, line, stack, links, shot } = Astro.props;
+const shots = { advaita, invoiceguard };
 ---
 <article class="case">
   <canvas class="terrain" data-contour="case" aria-hidden="true"></canvas>
@@ -15,6 +20,11 @@ const { name, kind, year, status, line, stack, links } = Astro.props;
       <h1><Kinetic text={name} idle /></h1>
       <p class="serif line">{line}</p>
     </header>
+    {shot && (
+      <figure class="shot">
+        <Image src={shots[shot]} alt={`Screenshot of ${name}`} widths={[800, 1200, 1440]} sizes="(max-width: 1440px) 92vw, 1300px" />
+      </figure>
+    )}
     <div class="cols">
       <div class="body"><slot /></div>
       <aside class="side">
@@ -39,6 +49,8 @@ const { name, kind, year, status, line, stack, links } = Astro.props;
   .st { color: var(--accent); }
   h1 { font-size: min(var(--step-4), 13vw); font-weight: 850; line-height: 0.82; letter-spacing: -0.035em; cursor: crosshair; }
   .line { font-size: var(--step-2); line-height: 1.15; max-width: 26ch; }
+  .shot { margin: 40px 0 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; aspect-ratio: 16 / 9; max-width: 100%; background: #0b0f14; }
+  .shot :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: top; }
   .cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; padding-top: 40px; }
   .body { grid-column: 1 / span 7; display: grid; gap: 1.1em; font-size: var(--step-1); line-height: 1.5; font-family: var(--f-serif); max-width: 62ch; }
   .body :global(h2) { font-family: var(--f-display); font-size: var(--step-2); margin-top: 0.8em; }

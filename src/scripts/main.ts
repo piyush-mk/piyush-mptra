@@ -1,7 +1,8 @@
-import { initContours, setPeak } from "./contour";
+import { initContours } from "./contour";
 import { initKinetic } from "./kinetic";
 import { initDesk } from "./desk";
 import { initPalette } from "./palette";
+import { initThemeToggle } from "./theme";
 import { initTracking } from "./track";
 
 // Reveal anything at or above the lower edge of the viewport, including elements skipped by a fast scroll
@@ -23,28 +24,9 @@ function initReveal() {
   check();
 }
 
-// Impact map: place pins and link the legend to the peaks
-function initImpact() {
-  const canvas = document.querySelector<HTMLCanvasElement>("canvas[data-contour=impact]");
-  if (!canvas) return;
-  const pins = [...document.querySelectorAll<HTMLElement>("[data-pin]")];
-  pins.forEach((p) => {
-    p.style.left = `${Number(p.dataset.x) * 100}%`;
-    p.style.top = `${Number(p.dataset.y) * 100}%`;
-  });
-  document.querySelectorAll<HTMLElement>("[data-peak]").forEach((li) => {
-    const i = Number(li.dataset.peak);
-    const on = (v: boolean) => { setPeak(canvas, i, v); pins[i]?.classList.toggle("on", v); li.classList.toggle("on", v); };
-    li.addEventListener("pointerenter", () => on(true));
-    li.addEventListener("pointerleave", () => on(false));
-    li.addEventListener("focus", () => on(true));
-    li.addEventListener("blur", () => on(false));
-  });
-}
-
+initThemeToggle();
 initReveal();
 initContours();
-initImpact();
 initKinetic();
 initDesk();
 initPalette();

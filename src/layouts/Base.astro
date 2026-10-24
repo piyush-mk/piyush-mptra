@@ -23,15 +23,15 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#e7eae5" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0c100e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f5f2" />
+    <meta name="color-scheme" content="light dark" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta name="twitter:card" content="summary" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <script is:inline>(function(){try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add("js")})();</script>
+    <script is:inline>(function(){try{if(localStorage.getItem("theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}document.documentElement.classList.add("js")})();</script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>

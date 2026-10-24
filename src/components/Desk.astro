@@ -1,118 +1,117 @@
 ---
+import { Image } from "astro:assets";
 import { projects } from "../content/profile";
+import advaita from "../assets/shots/advaita.jpg";
+import invoiceguard from "../assets/shots/invoiceguard.jpg";
+
+const shots = { advaita, invoiceguard };
+const list = projects.filter((p) => p.featured);
+const host = (p: (typeof list)[number]) => p.links[0]?.href.replace(/^https?:\/\//, "").replace(/\/$/, "") ?? `${p.slug}.local`;
 ---
 <section class="section" id="projects" aria-labelledby="proj-h">
   <div class="wrap">
     <div class="section-head">
-      <span class="label">Projects · desk</span>
-      <h2 id="proj-h">Things I built outside the day job.</h2>
+      <span class="label">Projects</span>
+      <h2 id="proj-h">Things I've shipped</h2>
     </div>
-    <p class="hint mono">An agent is working this desk. Grab any window to take over.</p>
 
     <div class="desk" data-desk>
-      <div class="log mono" aria-hidden="true" data-desk-log><div>&gt; observe(desk)</div></div>
-
-      {projects.map((p, i) => (
+      {list.map((p, i) => (
         <article class={`win w${i}`} data-win={p.slug} aria-labelledby={`win-${p.slug}`}>
           <header class="bar mono" data-drag>
             <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="t">{p.window}</span>
+            <span class="t">{host(p)}</span>
             {p.status && <span class="st">{p.status}</span>}
           </header>
-          <div class="body">
-            <p class="kind mono">{p.kind} · {p.year}</p>
-            <h3 id={`win-${p.slug}`}>{p.name}</h3>
-            <p class="line">{p.line}</p>
 
-            {p.slug === "advaita" && (
-              <div class="voice" data-voice>
-                <div class="bars" aria-hidden="true">{Array.from({ length: 28 }).map(() => <i></i>)}</div>
-                <button type="button" class="mono" data-interrupt>Interrupt</button>
-                <span class="mono vs" data-voice-state aria-live="polite">explaining step 2…</span>
-              </div>
-            )}
-            {p.slug === "agent-browser-layer" && (
-              <pre class="dom mono" aria-label="Example of a page serialised for a model">{`[1] button "Interrupt"
-[2] link   "Read the case study"
-[3] input  "Jump to…"
-> click(1)  ✓  re-reading page`}</pre>
-            )}
-            {p.slug === "invoiceguard" && (
-              <div class="grader mono" aria-label="Example grader output">
-                <span>task 07 · duplicate invoice</span><span class="ok">hold ✓ +1.0</span>
-                <span>task 12 · price variance</span><span class="ok">escalate ✓ +1.0</span>
-                <span>task 19 · missing GRN</span><span class="no">approve ✗ −0.5</span>
-              </div>
-            )}
+          {p.shot ? (
+            <a class="shot" href={`/work/${p.slug}`} tabindex="-1" aria-hidden="true">
+              <Image src={shots[p.shot]} alt="" widths={[480, 800, 1200]} sizes="(max-width: 680px) 92vw, (max-width: 1180px) 46vw, 40vw" />
+            </a>
+          ) : p.slug === "agent-browser-layer" ? (
+            <pre class="art mono" aria-hidden="true">{`[1] button  "Start learning"
+[2] link    "How it works"
+[3] input   "Search"
 
-            <p class="stk mono">{p.stack.join(" · ")}</p>
-            <div class="acts">
-              <a href={`/work/${p.slug}`} class="open">Open</a>
-              {p.links.map((l) => <a href={l.href} target="_blank" rel="noopener noreferrer" data-track={`out:${p.slug}:${l.label}`}>{l.label} ↗</a>)}
+> click(1)   ✓  re-reading page`}</pre>
+          ) : p.slug === "finscope" ? (
+            <pre class="art mono" aria-hidden="true">{`company   Visa          year   2023
+analysis  Consumer credit
+
+mode      single year | 5-year trend
+
+10-K  ▸ parse ▸ clean ▸ index ▸ LLM read`}</pre>
+          ) : (
+            <div class="art voice" aria-hidden="true">
+              <div class="bars">{Array.from({ length: 22 }).map(() => <i></i>)}</div>
+              <p class="mono">"do kilo chawal add karo"<br /><span>→ add_item("rice", 2 kg)</span></p>
             </div>
+          )}
+
+          <div class="body">
+            <h3 id={`win-${p.slug}`}><a href={`/work/${p.slug}`}>{p.name}</a></h3>
+            <p class="line">{p.line}</p>
+            <p class="meta mono">
+              <span>{p.stack.slice(0, 3).join(" · ")}</span>
+              {p.links[0] && <a href={p.links[0].href} target="_blank" rel="noopener noreferrer" data-track={`out:${p.slug}:${p.links[0].label}`}>Visit ↗</a>}
+            </p>
           </div>
         </article>
       ))}
 
       <div class="cursor" data-cursor aria-hidden="true">
         <svg viewBox="0 0 24 24"><path d="M3 2l7 19 2.5-7.5L20 11z"></path></svg>
-        <span class="mono">agent</span>
+        <span class="mono" data-cursor-label>agent</span>
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .hint { color: var(--muted); margin-bottom: 16px; }
   .desk {
-    position: relative; height: 900px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden;
-    background-color: var(--paper-2);
-    background-image: radial-gradient(color-mix(in srgb, var(--ink) 16%, transparent) 1px, transparent 1px);
+    position: relative; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 20px; padding: 24px;
+    border: 1px solid var(--line); border-radius: 6px; background-color: var(--paper-2);
+    background-image: radial-gradient(color-mix(in srgb, var(--ink) 12%, transparent) 1px, transparent 1px);
     background-size: 16px 16px;
   }
-  .log { position: absolute; right: 18px; bottom: 18px; width: 260px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: color-mix(in srgb, var(--window) 85%, transparent); color: var(--muted); line-height: 1.6; min-height: 112px; }
-  .log :global(em) { font-style: normal; color: var(--accent); }
+  .w0 { grid-column: 1 / span 7; }
+  .w1 { grid-column: 8 / span 5; align-self: start; }
+  .w2 { grid-column: 1 / span 4; align-self: start; }
+  .w3 { grid-column: 5 / span 3; align-self: start; }
+  .w4 { grid-column: 8 / span 5; grid-row: 2; align-self: start; }
+  .w2, .w3 { grid-row: 2; }
 
   .win {
-    position: absolute; width: 380px; background: var(--window); border: 1px solid var(--line); border-radius: 8px;
-    box-shadow: 0 18px 40px -24px rgb(0 0 0 / 0.45); transition: box-shadow 0.3s, outline-color 0.3s; outline: 2px solid transparent;
+    position: relative; display: flex; flex-direction: column; min-width: 0; background: var(--window); border: 1px solid var(--line); border-radius: 8px;
+    box-shadow: 0 18px 40px -28px rgb(0 0 0 / 0.4); outline: 2px solid transparent; transition: outline-color 0.3s, box-shadow 0.3s;
   }
-  .win.focus { outline-color: var(--accent); box-shadow: 0 26px 60px -24px rgb(0 0 0 / 0.5); }
-  .w0 { left: 3%; top: 4%; width: 430px; }
-  .w1 { left: 37%; top: 9%; }
-  .w2 { left: 67%; top: 3%; }
-  .w3 { left: 6%; top: 55%; width: 340px; }
-  .w4 { left: 36%; top: 58%; width: 340px; }
-  .w5 { left: 66%; top: 54%; width: 320px; }
-  .bar { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--line); color: var(--muted); cursor: grab; user-select: none; touch-action: none; }
+  .win.focus { outline-color: var(--accent); box-shadow: 0 26px 60px -28px rgb(0 0 0 / 0.45); }
+  .bar { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-bottom: 1px solid var(--line); color: var(--muted); cursor: grab; user-select: none; touch-action: none; min-width: 0; }
   .bar:active { cursor: grabbing; }
-  .dots { display: flex; gap: 5px; }
+  .dots { display: flex; gap: 5px; flex: none; }
   .dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--line); }
   .t { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .st { margin-left: auto; color: var(--accent); white-space: nowrap; }
-  .body { padding: 14px 16px 16px; display: grid; gap: 10px; }
-  .kind { color: var(--muted); }
-  h3 { font-size: 34px; font-weight: 850; letter-spacing: -0.02em; transition: font-stretch 0.4s var(--ease); }
-  .win:hover h3, .win.focus h3 { font-stretch: 118%; }
-  .line { font-family: var(--f-serif); font-size: 19px; line-height: 1.3; }
-  .stk { color: var(--muted); }
-  .acts { display: flex; flex-wrap: wrap; gap: 8px 14px; font-size: 14px; }
-  .acts a { text-decoration: none; border-bottom: 1px solid var(--line); }
-  .acts a:hover { border-color: var(--accent); }
-  .open { font-weight: 700; }
 
-  .voice { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .bars { display: flex; align-items: center; gap: 3px; height: 30px; flex: 1; min-width: 140px; }
-  .bars i { flex: 1; height: 100%; background: var(--accent); border-radius: 2px; transform-origin: center; transform: scaleY(0.3); animation: talk 1.1s ease-in-out infinite; }
+  .shot { display: block; aspect-ratio: 16 / 10; max-width: 100%; overflow: hidden; background: #0b0f14; border-bottom: 1px solid var(--line); }
+  .shot :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 0.8s var(--ease); }
+  .win:hover .shot :global(img) { transform: scale(1.02); }
+  .art { margin: 0; padding: 18px; background: var(--paper-2); border-bottom: 1px solid var(--line); min-height: 150px; font-size: 12.5px; line-height: 1.7; color: var(--ink); overflow-x: auto; }
+  .voice { display: grid; gap: 14px; align-content: center; }
+  .voice p { margin: 0; color: var(--ink); }
+  .voice p span { color: var(--accent); }
+  .bars { display: flex; align-items: center; gap: 3px; height: 34px; }
+  .bars i { flex: 1; height: 100%; background: var(--accent); border-radius: 2px; transform: scaleY(0.3); animation: talk 1.1s ease-in-out infinite; }
   .bars i:nth-child(3n) { animation-delay: -0.3s; } .bars i:nth-child(3n+1) { animation-delay: -0.7s; } .bars i:nth-child(4n) { animation-duration: 0.8s; }
-  .voice.cut .bars i { animation: none; transform: scaleY(0.08); transition: transform 0.15s; }
   @keyframes talk { 50% { transform: scaleY(1); } }
-  .voice button { border: 1px solid var(--ink); background: transparent; color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
-  .voice button:hover { background: var(--ink); color: var(--paper); }
-  .vs { width: 100%; color: var(--muted); }
-  .dom { margin: 0; padding: 10px; background: var(--paper-2); border-radius: 4px; overflow-x: auto; color: var(--ink); font-size: 12px; line-height: 1.6; }
-  .grader { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 10px; background: var(--paper-2); border-radius: 4px; font-size: 12px; }
-  .ok { color: var(--accent); } .no { color: var(--muted); text-decoration: line-through; }
+
+  .body { padding: 14px 16px 16px; display: grid; gap: 6px; }
+  h3 { font-size: 26px; font-weight: 850; letter-spacing: -0.02em; line-height: 1; transition: font-stretch 0.4s var(--ease); }
+  h3 a { text-decoration: none; }
+  .win:hover h3, .win.focus h3 { font-stretch: 118%; }
+  .line { color: var(--muted); font-size: 15px; line-height: 1.4; }
+  .meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; color: var(--muted); margin-top: 4px; }
+  .meta a { color: var(--accent); text-decoration: none; white-space: nowrap; }
 
   .cursor { position: absolute; left: 0; top: 0; z-index: 30; width: 22px; height: 22px; pointer-events: none; transition: transform 1.2s cubic-bezier(0.6, 0, 0.2, 1), opacity 0.4s; }
   .cursor svg { width: 22px; height: 22px; filter: drop-shadow(0 2px 3px rgb(0 0 0 / 0.3)); }
@@ -121,13 +120,13 @@ import { projects } from "../content/profile";
   .desk.user .cursor { opacity: 0; }
 
   @media (max-width: 1180px) {
-    .desk { height: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; padding: 16px; }
-    .win { position: relative; left: auto !important; top: auto !important; width: auto !important; transform: none !important; }
-    .log, .cursor { display: none; }
+    .w0, .w1, .w2, .w3, .w4 { grid-column: span 6; grid-row: auto; }
+    .w0 { grid-column: 1 / -1; }
+    .cursor { display: none; }
     .bar { cursor: default; }
   }
   @media (max-width: 680px) {
-    .desk { grid-template-columns: minmax(0, 1fr); padding: 10px; }
-    h3 { font-size: 28px; }
+    .desk { padding: 12px; gap: 14px; }
+    .w0, .w1, .w2, .w3, .w4 { grid-column: 1 / -1; }
   }
 </style>

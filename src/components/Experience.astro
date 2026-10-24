@@ -1,56 +1,43 @@
 ---
-import { experience } from "../content/profile";
+import { experience, education, stack } from "../content/profile";
 ---
 <section class="section" id="experience" aria-labelledby="exp-h">
   <div class="wrap">
     <div class="section-head">
       <span class="label">Experience</span>
-      <h2 id="exp-h">Four teams, one habit: automate the boring part.</h2>
+      <h2 id="exp-h">Where I've worked</h2>
     </div>
     <ul class="roles">
-      {experience.map((r, i) => (
-        <li class="reveal">
-          <details open={i === 0} data-track-toggle={`role:${r.org}:${r.title}`}>
-            <summary>
-              <span class="mono yr">{r.start} – {r.end}</span>
-              <span class="org">{r.org}</span>
-              <span class="title">{r.title}</span>
-              <span class="sum">{r.summary}</span>
-              <span class="pm mono" aria-hidden="true"></span>
-            </summary>
-            <ul class="points">
-              {r.points.map((p) => <li>{p}</li>)}
-            </ul>
-          </details>
+      {experience.map((r) => (
+        <li>
+          <span class="mono yr">{r.years}</span>
+          <span class="org">{r.org}</span>
+          <span class="title">{r.title}</span>
+          <span class="line">{r.line}</span>
         </li>
       ))}
+      <li class="edu">
+        <span class="mono yr">{education.years}</span>
+        <span class="org">Manipal</span>
+        <span class="title">{education.degree}</span>
+        <span class="line">{education.school}</span>
+      </li>
     </ul>
+    <p class="stack mono"><span class="label">Stack</span> {stack.join(" · ")}</p>
   </div>
 </section>
 
 <style>
   .roles { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
-  .roles > li { border-bottom: 1px solid var(--line); }
-  summary {
-    list-style: none; cursor: pointer; display: grid; gap: 4px 16px; align-items: baseline; padding: 20px 0;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-  }
-  summary::-webkit-details-marker { display: none; }
+  .roles li { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px 16px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--line); }
   .yr { grid-column: span 3; color: var(--muted); }
-  .org { grid-column: span 3; font-size: var(--step-2); font-weight: 850; letter-spacing: -0.02em; line-height: 1; transition: font-stretch 0.4s var(--ease), color 0.2s; }
-  .title { grid-column: span 3; font-weight: 600; font-stretch: 95%; }
-  .sum { grid-column: span 2; color: var(--muted); font-size: 14.5px; font-stretch: 90%; }
-  .pm { grid-column: span 1; justify-self: end; }
-  .pm::before { content: "+"; font-size: 20px; }
-  details[open] .pm::before { content: "–"; }
-  summary:hover .org { font-stretch: 122%; color: var(--accent); }
-  .points { margin: 0 0 28px; padding: 0; list-style: none; display: grid; gap: 12px; grid-template-columns: repeat(12, minmax(0, 1fr)); }
-  .points li { grid-column: 4 / span 8; position: relative; padding-left: 22px; max-width: 72ch; }
-  .points li::before { content: ""; position: absolute; left: 0; top: 0.75em; width: 10px; height: 1px; background: var(--accent); }
+  .org { grid-column: span 3; font-size: var(--step-1); font-weight: 800; letter-spacing: -0.01em; transition: font-stretch 0.4s var(--ease), color 0.2s; }
+  .roles li:hover .org { font-stretch: 120%; color: var(--accent); }
+  .title { grid-column: span 2; font-weight: 600; font-stretch: 92%; font-size: 15px; }
+  .line { grid-column: span 4; color: var(--muted); font-size: 15px; }
+  .edu .org { font-weight: 600; }
+  .stack { margin-top: 20px; color: var(--muted); display: flex; gap: 12px; flex-wrap: wrap; align-items: baseline; }
   @media (max-width: 900px) {
-    .yr, .org, .title { grid-column: 1 / -2; }
-    .sum { display: none; }
-    .pm { grid-column: -2 / -1; grid-row: 1; }
-    .points li { grid-column: 1 / -1; }
+    .yr, .org, .title, .line { grid-column: 1 / -1; }
   }
 </style>
