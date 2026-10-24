@@ -87,19 +87,38 @@ jobs:
       name: production
       url: https://piyush-mptra.com
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # Skip quietly (no failure) until the Cloudflare token has been added to the environment
+      - id: token
+        env:
+          TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -n "$TOKEN" ]; then echo "ready=true" >> "$GITHUB_OUTPUT"; else echo "::notice::CLOUDFLARE_API_TOKEN not set; skipping deploy"; fi
+      - if: steps.token.outputs.ready == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - if: steps.token.outputs.ready == 'true'
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .node-version
           cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npm run build
+      - if: steps.token.outputs.ready == 'true'
+        run: npm ci --no-audit --no-fund
+      - if: steps.token.outputs.ready == 'true'
+        run: npm run build
         env:
           ASTRO_TELEMETRY_DISABLED: 1
-      - uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+      - name: Deploy site
+        if: steps.token.outputs.ready == 'true'
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
+      - name: Deploy www redirect
+        if: steps.token.outputs.ready == 'true'
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy -c www-redirect/wrangler.jsonc

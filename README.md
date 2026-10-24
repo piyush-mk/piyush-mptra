@@ -22,9 +22,10 @@ docker compose up --build   # same build from a read-only nginx container on :80
 
 ## Deploy
 
-GitLab CI (`.gitlab-ci.yml`) checks, scans and deploys `main` to Cloudflare. Setup steps: [docs/DEPLOY.md](docs/DEPLOY.md).
-The GitHub workflow is the same pipeline and deploys only if the repository variable `DEPLOY_ENABLED`
-is `true` and the `production` environment holds `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
+Every push to `main` deploys from GitHub Actions (`.github/workflows/ci.yml`) once build, secret scan and container scan pass.
+It ships the site Worker and the `www-redirect/` Worker. Needs the `production` environment secrets
+`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`, and the repository variable `DEPLOY_ENABLED=true`.
+Manual deploy: `npm run deploy`. `.gitlab-ci.yml` is a dormant mirror of the same pipeline; see [docs/DEPLOY.md](docs/DEPLOY.md).
 
 ## Analytics
 
