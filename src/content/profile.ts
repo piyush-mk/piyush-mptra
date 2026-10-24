@@ -7,7 +7,7 @@ export const person = {
   last: "Mohapatra",
   role: "Software Engineer",
   location: "Delhi NCR, India",
-  statement: "I build AI systems for work where a wrong answer is expensive.",
+  statement: "I build software people rely on, from finance systems to classrooms.",
   email: "hello@piyush-mptra.com" as string | null, // Cloudflare Email Routing forwards this to Gmail
 };
 
@@ -33,13 +33,44 @@ export const portbot = {
   stack: ["Python", "FastAPI", "Pydantic v2", "React", "TypeScript", "SQL Server", "Pytest", "Azure Pipelines"],
 };
 
-export type Role = { org: string; title: string; years: string; line: string };
+// Second system for the "At work" section, next to PortBot
+export const autowebqc = {
+  line: "A service that keeps checking BlackRock's public websites against regulatory and reputational rules, and sends each finding, traced to its source, to the team that owns it.",
+  metrics: [
+    { value: "1,500+", label: "hours saved a year" },
+  ],
+};
+
+// Experience points avoid repeating PortBot and AutoWebQC, which have their own section
+export type Role = { org: string; title: string; years: string; points: string[] };
 
 export const experience: Role[] = [
-  { org: "BlackRock", title: "Software Development Engineer", years: "2025 – now", line: "PortBot, AutoWebQC and validation across 60,000+ portfolios." },
-  { org: "BlackRock", title: "Software Intern", years: "2025", line: "Contract 360, an exception-review platform that replaced Excel macros." },
-  { org: "Georgia Tech", title: "Research Assistant", years: "2024", line: "SEC filings to structured data; +5% NER F1." },
-  { org: "Ola", title: "Software Infrastructure Intern", years: "2023", line: "Data pipelines over 1M+ ride and EV records." },
+  {
+    org: "BlackRock", title: "Software Development Engineer", years: "2025 – now",
+    points: [
+      "Built PortBot and AutoWebQC (see below).",
+      "Designed a validation framework over 60,000+ portfolios that catches start-date and month-end anomalies before they reach analytics.",
+      "Automated portfolio billing end to end, with approval routing and access-controlled handoffs. Removed 500+ manual hours a year.",
+    ],
+  },
+  {
+    org: "BlackRock", title: "Software Intern", years: "Jan – Jul 2025",
+    points: [
+      "Built Contract 360, which replaced Excel and macro reviews with generated exceptions, assignment tracking and audit trails. Saved 50+ hours a month.",
+      "Automated daily portfolio data-quality checks in Python and SQL.",
+    ],
+  },
+  {
+    org: "Georgia Tech", title: "Research Assistant", years: "Summer 2024",
+    points: [
+      "Turned thousands of SEC filings into structured data and lifted a Transformer NER model's F1 by 5%.",
+      "Built Label Studio annotation tooling with nested entity linking for model training.",
+    ],
+  },
+  {
+    org: "Ola", title: "Software Infrastructure Intern", years: "Summer 2023",
+    points: ["Tuned SQL and Python pipelines over 1M+ ride and EV records that feed live dashboards. Saved 10+ hours a week of reporting."],
+  },
 ];
 
 export type Project = {
