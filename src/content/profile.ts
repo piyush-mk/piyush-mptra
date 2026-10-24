@@ -175,12 +175,14 @@ export const projects: Project[] = [
   },
 ];
 
-export const achievements = [
-  { rank: "Top 10", event: "Meta x PyTorch OpenEnv Hackathon", date: "2026" },
-  { rank: "3rd", event: "Paytm x Sarvam AI Hackathon", date: "2026" },
-  { rank: "Top 10", event: "Pocket FM x Sarvam x OpenAI, Zero to One", date: "2026" },
-  { rank: "Finalist", event: "Goldman Sachs India Quant Hackathon", date: "2024" },
-  { rank: "Best Use of Data", event: "NASA Space Apps, Bengaluru", date: "2023" },
+export type HackImage = "meta-pytorch" | "paytm" | "pocketfm" | "goldman" | "nasa";
+
+export const achievements: { rank: string; event: string; img?: HackImage; date: string }[] = [
+  { rank: "Top 10", event: "Meta x PyTorch OpenEnv Hackathon", img: "meta-pytorch", date: "2026" },
+  { rank: "3rd", event: "Paytm x Sarvam AI Hackathon", img: "paytm", date: "2026" },
+  { rank: "Top 10", event: "Pocket FM x Sarvam x OpenAI, Zero to One", img: "pocketfm", date: "2026" },
+  { rank: "Finalist", event: "Goldman Sachs India Quant Hackathon", img: "goldman", date: "2024" },
+  { rank: "Best Use of Data", event: "NASA Space Apps, Bengaluru", img: "nasa", date: "2023" },
   { rank: "Winner", event: "HackNITR 4.0", date: "2023" },
 ];
 

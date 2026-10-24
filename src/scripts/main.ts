@@ -35,6 +35,24 @@ document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((b) =>
   }),
 );
 
+// Hackathon photo viewer
+function initLightbox() {
+  const dlg = document.querySelector<HTMLDialogElement>("[data-lightbox-dialog]");
+  const img = document.querySelector<HTMLImageElement>("[data-lightbox-img]");
+  if (!dlg || !img) return;
+  document.querySelectorAll<HTMLButtonElement>("[data-lightbox]").forEach((b) =>
+    b.addEventListener("click", () => {
+      img.src = b.dataset.lightbox ?? "";
+      img.alt = b.dataset.alt ?? "";
+      dlg.showModal();
+      track("photo", b.dataset.alt ?? "");
+    }),
+  );
+  dlg.querySelector("[data-lightbox-close]")?.addEventListener("click", () => dlg.close());
+  dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+}
+
+initLightbox();
 initThemeToggle();
 initReveal();
 initContours();
