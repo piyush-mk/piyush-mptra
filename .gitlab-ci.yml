@@ -69,7 +69,7 @@ deploy:
   resource_group: production
   environment:
     name: production
-    url: https://piyush-mptra.com
+    url: https://piyushmoha.com
   script:
     - npm run build
     - npx wrangler deploy

@@ -7,7 +7,7 @@ interface Env {
 }
 
 const NAME = /^[a-z][a-z0-9:_-]{0,39}$/;
-const HOSTS = new Set(["piyush-mptra.com", "www.piyush-mptra.com", "localhost"]);
+const HOSTS = new Set(["piyushmoha.com", "localhost"]);
 const SECURITY = {
   "X-Content-Type-Options": "nosniff",
   "Cache-Control": "no-store",
@@ -55,10 +55,6 @@ async function collect(req: Request, env: Env) {
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
-    if (url.hostname === "www.piyush-mptra.com") {
-      url.hostname = "piyush-mptra.com";
-      return Response.redirect(url.toString(), 301);
-    }
     if (url.pathname === "/api/e") return collect(req, env);
     if (url.pathname.startsWith("/api/")) return empty(404);
     return env.ASSETS.fetch(req);

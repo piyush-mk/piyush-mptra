@@ -8,7 +8,7 @@ export const person = {
   role: "Software Engineer",
   location: "Delhi NCR, India",
   statement: "I build software people rely on, from finance systems to classrooms.",
-  email: "hello@piyush-mptra.com" as string | null, // Cloudflare Email Routing forwards this to Gmail
+  email: "hello@piyushmoha.com" as string | null, // Cloudflare Email Routing forwards this to Gmail
 };
 
 export const links = [

@@ -1,4 +1,4 @@
 Contact: https://github.com/piyush-mk/piyush-mptra/security/advisories/new
 Expires: 2027-10-24T00:00:00.000Z
 Preferred-Languages: en
-Canonical: https://piyush-mptra.com/.well-known/security.txt
+Canonical: https://piyushmoha.com/.well-known/security.txt

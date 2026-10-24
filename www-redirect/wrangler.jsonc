@@ -5,5 +5,9 @@
   "compatibility_date": "2026-10-01",
   "workers_dev": false,
   "preview_urls": false,
-  "routes": [{ "pattern": "www.piyush-mptra.com", "custom_domain": true }]
+  "routes": [
+    { "pattern": "piyush-mptra.com", "custom_domain": true },
+    { "pattern": "www.piyush-mptra.com", "custom_domain": true },
+    { "pattern": "www.piyushmoha.com", "custom_domain": true }
+  ]
 }

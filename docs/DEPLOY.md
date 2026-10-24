@@ -1,4 +1,4 @@
-# Deploying piyush-mptra.com
+# Deploying piyushmoha.com
 
 Code lives on GitHub and is mirrored to GitLab with every `git push`. GitLab CI runs the checks and
 scans, then deploys to Cloudflare from `main`. GitHub Actions has the same pipeline, but leave its
@@ -60,7 +60,7 @@ npm run deploy
 ## Check it
 
 ```bash
-curl -sI https://piyush-mptra.com
+curl -sI https://piyushmoha.com
 ```
 
 Expect `200`, plus `content-security-policy` and `strict-transport-security` headers. Then run
