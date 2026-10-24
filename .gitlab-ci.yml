@@ -1,0 +1,75 @@
+# GitLab mirror of .github/workflows/ci.yml: check, scan, then deploy to Cloudflare from main.
+# Needs CI/CD variables CLOUDFLARE_API_TOKEN (masked, protected) and CLOUDFLARE_ACCOUNT_ID (protected).
+
+stages: [check, scan, deploy]
+
+default:
+  interruptible: true
+
+variables:
+  ASTRO_TELEMETRY_DISABLED: "1"
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+
+.node:
+  image: node:24-slim
+  cache:
+    key: { files: [package-lock.json] }
+    paths: [.npm/]
+  before_script:
+    - npm ci --no-audit --no-fund
+
+build:
+  extends: .node
+  stage: check
+  script:
+    - npm audit --omit=dev --audit-level=high
+    - npx astro check
+    - npx tsc -p worker
+    - npm run build
+    - |
+      if grep -rEIl 'gmail\.com|\+?91[ -]?[6-9][0-9]{4}[ -]?[0-9]{5}' dist src; then
+        echo "Personal email or phone number found"; exit 1
+      fi
+  artifacts:
+    paths: [dist/]
+    expire_in: 1 week
+
+secrets:
+  stage: check
+  image:
+    name: ghcr.io/gitleaks/gitleaks:v8.30.1
+    entrypoint: [""]
+  variables:
+    GIT_DEPTH: "0"
+  script:
+    - gitleaks git --redact --no-banner --verbose .
+
+container:
+  stage: scan
+  needs: []
+  image: docker:29.9.2
+  services:
+    - docker:29.9.2-dind
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  script:
+    - docker build -t piyush-mptra:ci .
+    - docker run -d --name web --read-only --tmpfs /tmp --tmpfs /var/cache/nginx --cap-drop ALL -p 8080:8080 piyush-mptra:ci
+    - for i in $(seq 1 20); do wget -qO- http://docker:8080/ >/dev/null && break; sleep 1; done
+    - wget -qS -O /dev/null http://docker:8080/ 2>&1 | grep -i content-security-policy
+    - docker save piyush-mptra:ci -o image.tar
+    - docker run --rm -v "$PWD/image.tar:/image.tar:ro" aquasec/trivy:0.76.1 image --input /image.tar --severity CRITICAL,HIGH --ignore-unfixed --exit-code 1 --no-progress
+
+deploy:
+  extends: .node
+  stage: deploy
+  needs: [build, secrets, container]
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CLOUDFLARE_API_TOKEN
+  resource_group: production
+  environment:
+    name: production
+    url: https://piyush-mptra.com
+  script:
+    - npm run build
+    - npx wrangler deploy
