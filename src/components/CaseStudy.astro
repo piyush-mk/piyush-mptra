@@ -1,0 +1,48 @@
+---
+import Kinetic from "./Kinetic.astro";
+interface Props {
+  name: string; kind: string; year: string; status?: string; line: string;
+  stack: string[]; links: { label: string; href: string }[];
+}
+const { name, kind, year, status, line, stack, links } = Astro.props;
+---
+<article class="case">
+  <canvas class="terrain" data-contour="case" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <p class="mono crumbs"><a href="/#projects">← All work</a></p>
+    <header class="head">
+      <p class="label">{kind} · {year}{status && <> · <span class="st">{status}</span></>}</p>
+      <h1><Kinetic text={name} idle /></h1>
+      <p class="serif line">{line}</p>
+    </header>
+    <div class="cols">
+      <div class="body"><slot /></div>
+      <aside class="side">
+        <h2 class="label">Stack</h2>
+        <ul class="mono">{stack.map((s) => <li>{s}</li>)}</ul>
+        {links.length > 0 && <>
+          <h2 class="label">Links</h2>
+          <ul>{links.map((l) => <li><a href={l.href} target="_blank" rel="noopener noreferrer" data-track={`out:case:${l.label}`}>{l.label} ↗</a></li>)}</ul>
+        </>}
+      </aside>
+    </div>
+  </div>
+</article>
+
+<style>
+  .case { position: relative; isolation: isolate; }
+  .terrain { position: absolute; inset: 0 0 auto 0; height: 70vh; width: 100%; z-index: -1; opacity: 0.7;
+    mask-image: linear-gradient(to bottom, black 40%, transparent); -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent); }
+  .crumbs { padding-top: 28px; color: var(--muted); }
+  .crumbs a { text-decoration: none; }
+  .head { padding-block: clamp(48px, 8vw, 120px) clamp(40px, 6vw, 80px); border-bottom: 2px solid var(--ink); display: grid; gap: 20px; }
+  .st { color: var(--accent); }
+  h1 { font-size: min(var(--step-4), 13vw); font-weight: 850; line-height: 0.82; letter-spacing: -0.035em; cursor: crosshair; }
+  .line { font-size: var(--step-2); line-height: 1.15; max-width: 26ch; }
+  .cols { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; padding-top: 40px; }
+  .body { grid-column: 1 / span 7; display: grid; gap: 1.1em; font-size: var(--step-1); line-height: 1.5; font-family: var(--f-serif); max-width: 62ch; }
+  .body :global(h2) { font-family: var(--f-display); font-size: var(--step-2); margin-top: 0.8em; }
+  .side { grid-column: 9 / -1; display: grid; align-content: start; gap: 12px; }
+  .side ul { list-style: none; margin: 0 0 20px; padding: 10px 0 0; border-top: 1px solid var(--ink); display: grid; gap: 6px; }
+  @media (max-width: 900px) { .body, .side { grid-column: 1 / -1; } }
+</style>

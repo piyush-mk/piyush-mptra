@@ -1,0 +1,16 @@
+---
+import Base from "../layouts/Base.astro";
+import Kinetic from "../components/Kinetic.astro";
+---
+<Base title="Not found · Piyush Mohapatra">
+  <section class="wrap nf">
+    <p class="label">404 · off the map</p>
+    <h1><Kinetic text="LOST" idle /></h1>
+    <p class="serif">This page does not exist. <a href="/">Back to the start</a> or press ⌘K.</p>
+  </section>
+</Base>
+<style>
+  .nf { padding-block: 120px; display: grid; gap: 24px; }
+  h1 { font-size: var(--step-4); font-weight: 850; line-height: 0.8; }
+  .serif { font-size: var(--step-1); }
+</style>

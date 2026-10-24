@@ -1,0 +1,15 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="foot">
+  <div class="wrap row mono">
+    <span>© {year} Piyush Mohapatra</span>
+    <span>Built with Astro. No cookies, no cross-site tracking.</span>
+    <a href="https://github.com/piyush-mk/piyush-mptra" data-track="out:source">Source</a>
+  </div>
+</footer>
+
+<style>
+  .foot { margin-top: clamp(80px, 10vw, 160px); border-top: 1px solid var(--line); }
+  .row { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; padding-block: 24px; color: var(--muted); }
+</style>

@@ -1,0 +1,63 @@
+---
+import { achievements, toolbox, education } from "../content/profile";
+---
+<section class="section" id="record" aria-labelledby="rec-h">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="label">Record</span>
+      <h2 id="rec-h">Hackathons, ranked.</h2>
+    </div>
+    <ol class="ranks">
+      {achievements.map((a) => (
+        <li class="reveal">
+          <span class="rank">{a.rank}</span>
+          <span class="ev">{a.event}<small class="mono">{a.note}</small></span>
+          <span class="mono dt">{a.date}</span>
+        </li>
+      ))}
+    </ol>
+
+    <div class="two">
+      <div>
+        <h3 class="label sub">Toolbox</h3>
+        <dl class="tools">
+          {toolbox.map((t) => (
+            <div><dt class="mono">{t.group}</dt><dd>{t.items.join(", ")}</dd></div>
+          ))}
+        </dl>
+      </div>
+      <div>
+        <h3 class="label sub">Education</h3>
+        <div class="edu">
+          <p class="school">{education.school}</p>
+          <p>{education.degree}</p>
+          <p class="mono">{education.grade} · {education.years}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ranks { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+  .ranks li { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; align-items: baseline; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .rank { grid-column: span 4; font-size: var(--step-2); font-weight: 850; font-stretch: 112%; letter-spacing: -0.02em; line-height: 1; transition: color 0.2s, font-stretch 0.4s var(--ease); }
+  .ranks li:hover .rank { color: var(--accent); font-stretch: 125%; }
+  .ev { grid-column: span 6; font-weight: 600; font-size: var(--step-1); line-height: 1.2; display: grid; gap: 4px; }
+  .ev small { font-weight: 400; color: var(--muted); }
+  .dt { grid-column: span 2; justify-self: end; color: var(--muted); }
+  .two { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: 40px; margin-top: clamp(64px, 8vw, 120px); }
+  .sub { margin-bottom: 14px; font-weight: 400; line-height: 1.4; }
+  .tools { margin: 0; border-top: 1px solid var(--ink); }
+  .tools div { display: grid; grid-template-columns: 120px 1fr; gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .tools dt { color: var(--muted); padding-top: 3px; }
+  .tools dd { margin: 0; font-stretch: 95%; }
+  .edu { border-top: 1px solid var(--ink); padding-top: 14px; display: grid; gap: 6px; }
+  .school { font-size: var(--step-2); font-weight: 850; line-height: 1; letter-spacing: -0.02em; }
+  @media (max-width: 900px) {
+    .rank, .ev { grid-column: 1 / -1; }
+    .dt { grid-column: 1 / -1; justify-self: start; }
+    .two { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) { .tools div { grid-template-columns: 1fr; gap: 2px; } }
+</style>
