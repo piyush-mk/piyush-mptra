@@ -43,7 +43,8 @@ export function initPalette() {
     } else if (action === "copy") {
       navigator.clipboard?.writeText(location.href).catch(() => {});
     } else if (href) {
-      if (external) window.open(href, "_blank", "noopener,noreferrer");
+      if (href.startsWith("mailto:")) location.href = href;
+      else if (external) window.open(href, "_blank", "noopener,noreferrer");
       else location.href = href;
     }
   };

@@ -3,7 +3,7 @@ import { initKinetic } from "./kinetic";
 import { initDesk } from "./desk";
 import { initPalette } from "./palette";
 import { initThemeToggle } from "./theme";
-import { initTracking } from "./track";
+import { initTracking, track } from "./track";
 
 // Reveal anything at or above the lower edge of the viewport, including elements skipped by a fast scroll
 function initReveal() {
@@ -23,6 +23,17 @@ function initReveal() {
   addEventListener("resize", onScroll);
   check();
 }
+
+// Copy buttons: copy the address, confirm briefly
+document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((b) =>
+  b.addEventListener("click", () => {
+    navigator.clipboard?.writeText(b.dataset.copy ?? "").then(() => {
+      b.textContent = "Copied";
+      window.setTimeout(() => (b.textContent = "Copy"), 1600);
+    }).catch(() => {});
+    track("click", "copy:email");
+  }),
+);
 
 initThemeToggle();
 initReveal();
