@@ -1,7 +1,7 @@
 # piyushmoha.com
 
 Source for Piyush Mohapatra's portfolio at https://piyushmoha.com. Static Astro site served by a Cloudflare Worker.
- is a second Worker that sends piyush-mptra.com, www.piyush-mptra.com and www.piyushmoha.com to piyushmoha.com.
+`www-redirect/` is a second Worker that sends piyush-mptra.com, www.piyush-mptra.com and www.piyushmoha.com to piyushmoha.com.
 
 ## Run it
 
