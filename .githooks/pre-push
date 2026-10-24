@@ -1,0 +1,13 @@
+#!/bin/sh
+# Local gate before anything leaves this machine: types, build, and the private-details check.
+# Enable once per clone:  git config core.hooksPath .githooks
+set -e
+if command -v fnm >/dev/null 2>&1; then eval "$(fnm env --shell bash)"; fnm use >/dev/null 2>&1 || true; fi
+echo "pre-push: checking…"
+npx astro check >/dev/null
+npx tsc -p worker
+npm run build >/dev/null
+if grep -rEIl 'gmail\.com|\+?91[ -]?[6-9][0-9]{4}[ -]?[0-9]{5}' dist src; then
+  echo "pre-push: personal email or phone number found, push blocked"; exit 1
+fi
+echo "pre-push: ok"

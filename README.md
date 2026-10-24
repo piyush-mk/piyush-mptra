@@ -22,7 +22,8 @@ docker compose up --build   # same build from a read-only nginx container on :80
 
 ## Deploy
 
-Pushes to `main` deploy through `.github/workflows/ci.yml` once the repository variable `DEPLOY_ENABLED`
+GitLab CI (`.gitlab-ci.yml`) checks, scans and deploys `main` to Cloudflare. Setup steps: [docs/DEPLOY.md](docs/DEPLOY.md).
+The GitHub workflow is the same pipeline and deploys only if the repository variable `DEPLOY_ENABLED`
 is `true` and the `production` environment holds `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
 
 ## Analytics
