@@ -2,7 +2,7 @@
 # Build the static site, then serve it from an unprivileged, read-only nginx.
 # Production runs on Cloudflare; this image is for local prod-like runs and portability.
 
-FROM node:24-alpine AS build
+FROM node:25-alpine AS build
 WORKDIR /app
 ENV ASTRO_TELEMETRY_DISABLED=1
 COPY package.json package-lock.json ./
