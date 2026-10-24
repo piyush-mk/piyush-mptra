@@ -10,9 +10,10 @@ interface Props {
 }
 const {
   title = "Piyush Mohapatra · Software Engineer",
-  description = "Piyush Mohapatra builds LLM agents that run in production, real-time voice AI, and the data systems underneath them.",
+  description = "Software engineer at BlackRock, building software people rely on, from finance systems to classrooms.",
 } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+// Pages build as /name.html; the public URL drops the extension and the index name
+const canonical = new URL(Astro.url.pathname.replace(/(index)?\.html$/, ""), Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -29,7 +30,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:site_name" content="Piyush Mohapatra" />
+    <meta property="og:image" content={new URL("/og.jpg", Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Piyush Mohapatra, Software Engineer at BlackRock" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={new URL("/og.jpg", Astro.site).href} />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <script is:inline>(function(){try{if(localStorage.getItem("theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}document.documentElement.classList.add("js")})();</script>
   </head>
