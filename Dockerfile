@@ -11,6 +11,9 @@ COPY . .
 RUN npm run build && node scripts/nginx-headers.mjs > /app/headers.conf
 
 FROM nginxinc/nginx-unprivileged:stable-alpine
+# Pull in Alpine security fixes released after the base image was built
+USER root
+RUN apk upgrade --no-cache
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/headers.conf /etc/nginx/snippets/headers.conf
 COPY --from=build /app/dist /usr/share/nginx/html
