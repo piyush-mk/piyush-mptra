@@ -6,8 +6,9 @@ import paytm from "../assets/hack/paytm.jpg";
 import pocketfm from "../assets/hack/pocketfm.jpg";
 import goldman from "../assets/hack/goldman.jpg";
 import nasa from "../assets/hack/nasa.jpg";
+import hacknitr from "../assets/hack/hacknitr.jpg";
 
-const images = { "meta-pytorch": metaPytorch, paytm, pocketfm, goldman, nasa };
+const images = { "meta-pytorch": metaPytorch, paytm, pocketfm, goldman, nasa, hacknitr };
 // Large version for the click-to-enlarge viewer
 const full = Object.fromEntries(
   await Promise.all(Object.entries(images).map(async ([k, src]) => [k, (await getImage({ src, width: 1200, format: "webp" })).src])),

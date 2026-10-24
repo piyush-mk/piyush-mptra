@@ -175,7 +175,7 @@ export const projects: Project[] = [
   },
 ];
 
-export type HackImage = "meta-pytorch" | "paytm" | "pocketfm" | "goldman" | "nasa";
+export type HackImage = "meta-pytorch" | "paytm" | "pocketfm" | "goldman" | "nasa" | "hacknitr";
 
 export const achievements: { rank: string; event: string; img?: HackImage; date: string }[] = [
   { rank: "Top 10", event: "Meta x PyTorch OpenEnv Hackathon", img: "meta-pytorch", date: "2026" },
@@ -183,7 +183,7 @@ export const achievements: { rank: string; event: string; img?: HackImage; date:
   { rank: "Top 10", event: "Pocket FM x Sarvam x OpenAI, Zero to One", img: "pocketfm", date: "2026" },
   { rank: "Finalist", event: "Goldman Sachs India Quant Hackathon", img: "goldman", date: "2024" },
   { rank: "Best Use of Data", event: "NASA Space Apps, Bengaluru", img: "nasa", date: "2023" },
-  { rank: "Winner", event: "HackNITR 4.0", date: "2023" },
+  { rank: "Winner", event: "HackNITR 4.0", img: "hacknitr", date: "2023" },
 ];
 
 export const stack = ["Python", "TypeScript", "Java", "SQL", "FastAPI", "Node.js", "React", "Next.js", "PyTorch", "Playwright", "Docker"];
