@@ -1,5 +1,6 @@
 // ⌘K command palette over a native <dialog>.
 import { track } from "./track";
+import { toggleTheme } from "./theme";
 
 export function initPalette() {
   const dlg = document.querySelector<HTMLDialogElement>("[data-palette]");
@@ -38,10 +39,7 @@ export function initPalette() {
     dlg.close();
     track("palette:run", li.querySelector(".l")?.textContent ?? "");
     if (action === "theme") {
-      const root = document.documentElement;
-      const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-      root.dataset.theme = dark ? "light" : "dark";
-      try { localStorage.setItem("theme", root.dataset.theme); } catch { /* storage blocked */ }
+      toggleTheme("palette");
     } else if (action === "copy") {
       navigator.clipboard?.writeText(location.href).catch(() => {});
     } else if (href) {

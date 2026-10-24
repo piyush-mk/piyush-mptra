@@ -4,9 +4,9 @@ import { links, projects } from "../content/profile";
 type Item = { group: string; label: string; hint: string; href?: string; action?: string; external?: boolean };
 const items: Item[] = [
   { group: "Go to", label: "Work at BlackRock", hint: "section", href: "/#work" },
-  { group: "Go to", label: "Impact map", hint: "section", href: "/#impact" },
   { group: "Go to", label: "Projects", hint: "section", href: "/#projects" },
-  { group: "Go to", label: "Record", hint: "section", href: "/#record" },
+  { group: "Go to", label: "Experience", hint: "section", href: "/#experience" },
+  { group: "Go to", label: "Hackathon results", hint: "section", href: "/#record" },
   { group: "Go to", label: "Contact", hint: "section", href: "/#contact" },
   ...projects.map((p) => ({ group: "Projects", label: p.name, hint: p.kind, href: `/work/${p.slug}` })),
   ...links.map((l) => ({ group: "Elsewhere", label: l.label, hint: l.handle, href: l.href, external: true })),
