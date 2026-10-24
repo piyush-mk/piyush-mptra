@@ -80,7 +80,7 @@ jobs:
           exit-code: "1"
 
   deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' && vars.DEPLOY_ENABLED == 'true'
     needs: [build, secrets, container]
     runs-on: ubuntu-latest
     environment:
