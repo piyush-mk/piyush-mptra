@@ -1,0 +1,60 @@
+---
+import { links, projects } from "../content/profile";
+
+type Item = { group: string; label: string; hint: string; href?: string; action?: string; external?: boolean };
+const items: Item[] = [
+  { group: "Go to", label: "Work at BlackRock", hint: "section", href: "/#work" },
+  { group: "Go to", label: "Impact map", hint: "section", href: "/#impact" },
+  { group: "Go to", label: "Projects", hint: "section", href: "/#projects" },
+  { group: "Go to", label: "Record", hint: "section", href: "/#record" },
+  { group: "Go to", label: "Contact", hint: "section", href: "/#contact" },
+  ...projects.map((p) => ({ group: "Projects", label: p.name, hint: p.kind, href: `/work/${p.slug}` })),
+  ...links.map((l) => ({ group: "Elsewhere", label: l.label, hint: l.handle, href: l.href, external: true })),
+  { group: "Do", label: "Toggle light / dark", hint: "theme", action: "theme" },
+  { group: "Do", label: "Copy link to this page", hint: "clipboard", action: "copy" },
+];
+---
+<dialog class="palette" aria-label="Jump to" data-palette>
+  <div class="box">
+    <div class="field">
+      <span class="mono prompt" aria-hidden="true">&gt;</span>
+      <input id="palette-q" type="text" placeholder="Jump to a section, project or link" autocomplete="off" spellcheck="false"
+        role="combobox" aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list" />
+      <kbd class="mono">esc</kbd>
+    </div>
+    <ul id="palette-list" role="listbox">
+      {items.map((i, n) => (
+        <li role="option" id={`pal-${n}`} data-group={i.group} data-href={i.href} data-action={i.action} data-external={i.external ? "1" : undefined}
+          aria-selected={n === 0 ? "true" : "false"}>
+          <span class="g mono">{i.group}</span>
+          <span class="l">{i.label}</span>
+          <span class="h mono">{i.hint}</span>
+        </li>
+      ))}
+    </ul>
+    <p class="empty mono" hidden>No match. Try "advaita" or "github".</p>
+  </div>
+</dialog>
+
+<style>
+  .palette {
+    width: min(640px, calc(100vw - 32px)); max-height: min(520px, 80vh); padding: 0; margin-top: 12vh;
+    border: 1px solid var(--line); border-radius: 12px; background: var(--window); color: var(--ink);
+    box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.35);
+  }
+  .palette::backdrop { background: color-mix(in srgb, var(--paper) 55%, transparent); backdrop-filter: blur(3px); }
+  .box { display: grid; grid-template-rows: auto 1fr; max-height: inherit; }
+  .field { display: flex; align-items: center; gap: 10px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  .prompt { color: var(--accent); }
+  input { flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink); font: 500 18px var(--f-display); outline: none; }
+  kbd { color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; }
+  ul { list-style: none; margin: 0; padding: 6px; overflow: auto; }
+  li { display: grid; grid-template-columns: 84px 1fr auto; gap: 12px; align-items: baseline; padding: 9px 10px; border-radius: 6px; cursor: pointer; }
+  li[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+  li[aria-selected="true"] .g, li[aria-selected="true"] .h { color: inherit; opacity: 0.8; }
+  .g, .h { color: var(--muted); }
+  .l { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .h { max-width: 40vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .empty { padding: 18px 16px; color: var(--muted); }
+  @media (max-width: 520px) { li { grid-template-columns: 1fr auto; } .g { display: none; } }
+</style>

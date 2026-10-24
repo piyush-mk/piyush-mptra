@@ -1,0 +1,60 @@
+---
+import Kinetic from "./Kinetic.astro";
+import { person, portbot } from "../content/profile";
+const stamp = new Date().toLocaleDateString("en-GB", { month: "short", year: "numeric" });
+---
+<section class="hero" aria-labelledby="hero-name">
+  <canvas class="terrain" data-contour="hero" aria-hidden="true"></canvas>
+  <div class="wrap grid">
+    <div class="top mono">
+      <span>{person.role}</span>
+      <span class="hide-sm">LLM agents · voice AI · data systems</span>
+      <span>{person.location.split(",")[0]} · {stamp}</span>
+    </div>
+
+    <h1 id="hero-name" class="name">
+      <Kinetic text={person.first.toUpperCase()} idle />
+      <Kinetic text={person.last.toUpperCase()} idle />
+    </h1>
+
+    <p class="statement serif">{person.statement}</p>
+
+    <dl class="facts">
+      <div><dt class="label">Now</dt><dd><b>BlackRock</b> Software Development Engineer</dd></div>
+      <div><dt class="label">In production</dt><dd><b class="num">{portbot.metrics[0].value}</b> PortBot users at <span class="num">{portbot.metrics[2].value}</span> uptime</dd></div>
+      <div><dt class="label">Live</dt><dd><b>Advaita</b> voice tutor, piloting in a Mumbai school</dd></div>
+      <div><dt class="label">Recent</dt><dd><b>Top 10 ×2</b> OpenEnv, Zero to One AI</dd></div>
+    </dl>
+
+    <p class="agent mono" aria-live="polite"><span class="dot"></span><span data-agent-line>agent idle · press ⌘K to jump anywhere</span></p>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; isolation: isolate; overflow: hidden; border-bottom: 2px solid var(--ink); }
+  .terrain { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; }
+  .grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 0 16px; padding-block: clamp(20px, 3vw, 36px) clamp(24px, 3vw, 40px); min-height: min(92vh, 980px); align-content: space-between; }
+  .top { grid-column: 1 / -1; display: flex; justify-content: space-between; gap: 16px; color: var(--muted); }
+  .name {
+    grid-column: 1 / -1; margin-top: clamp(40px, 8vw, 120px);
+    display: grid; font-size: min(var(--step-4), 13.2vw); font-weight: 850; line-height: 0.8; letter-spacing: -0.035em;
+    cursor: crosshair; user-select: none;
+  }
+  .name :global(.kinetic) { display: flex; }
+  .name :global(.kinetic:last-child) { justify-self: end; }
+  .statement { grid-column: 1 / span 6; margin-top: clamp(28px, 4vw, 56px); font-size: var(--step-2); line-height: 1.12; max-width: 24ch; }
+  .facts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: clamp(40px, 6vw, 88px) 0 0; border-top: 1px solid var(--ink); padding-top: 14px; }
+  .facts dd { margin: 6px 0 0; font-size: 15px; font-stretch: 92%; line-height: 1.35; }
+  .facts b { display: block; font-size: var(--step-1); font-weight: 800; font-stretch: 112%; letter-spacing: -0.01em; }
+  .agent { grid-column: 1 / -1; margin-top: 20px; display: flex; align-items: center; gap: 8px; color: var(--muted); min-height: 1.5em; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent); }
+  @media (max-width: 900px) {
+    .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 22px; }
+    .statement { grid-column: 1 / -1; }
+  }
+  @media (max-width: 600px) {
+    .hide-sm { display: none; }
+    .grid { min-height: auto; }
+    .name :global(.kinetic:last-child) { justify-self: start; }
+  }
+</style>

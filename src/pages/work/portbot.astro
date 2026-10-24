@@ -1,0 +1,15 @@
+---
+import Base from "../../layouts/Base.astro";
+import CaseStudy from "../../components/CaseStudy.astro";
+import { portbot } from "../../content/profile";
+---
+<Base title="PortBot · Piyush Mohapatra" description="An LLM agent at BlackRock that turns free-form portfolio requests into validated workflows.">
+  <CaseStudy name="PortBot" kind="Production LLM agent, BlackRock" year="2025–26" status="In production" line="The model proposes. Deterministic code decides." stack={portbot.stack} links={[]}>
+    <p>Setting up a portfolio meant forms, reference-data lookups and back-and-forth between teams. PortBot lets an operations user describe what they want in plain language and turns it into a request that is valid before it is ever submitted.</p>
+    <p>{portbot.metrics.map((m) => `${m.value} ${m.label}`).join(". ")}.</p>
+    <h2>How it works</h2>
+    {portbot.steps.map((s) => <p><strong>{s.name}.</strong> {s.body}</p>)}
+    <h2>Why it is built this way</h2>
+    <p>In finance a confident wrong answer is worse than a question. So the model only extracts and proposes. Every value it produces passes through code that can say no, and every decision is logged with who asked and what changed. The work is internal, so this page describes my part without sharing private material.</p>
+  </CaseStudy>
+</Base>

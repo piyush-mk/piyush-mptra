@@ -1,0 +1,17 @@
+---
+// Splits text into per-letter spans that the kinetic script stretches near the pointer.
+interface Props { text: string; as?: "h1" | "h2" | "span" | "p"; class?: string; idle?: boolean }
+const { text, as: Tag = "span", class: cls = "", idle = false } = Astro.props;
+const words = text.split(/(\s+)/);
+---
+<Tag class:list={["kinetic", cls]} aria-label={text} data-kinetic data-idle={idle ? "1" : undefined}>
+  {words.map((w) =>
+    /^\s+$/.test(w)
+      ? <span class="sp" aria-hidden="true"></span>
+      : <span class="w" aria-hidden="true">{[...w].map((ch) => <span class="k">{ch}</span>)}</span>
+  )}
+</Tag>
+
+<style>
+  .w { display: inline-flex; white-space: nowrap; }
+</style>

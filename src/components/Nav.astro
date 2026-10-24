@@ -1,0 +1,57 @@
+---
+const items = [
+  { href: "/#work", label: "Work" },
+  { href: "/#projects", label: "Projects" },
+  { href: "/#record", label: "Record" },
+  { href: "/#contact", label: "Contact" },
+];
+---
+<header class="nav">
+  <div class="wrap row">
+    <a class="mark" href="/" aria-label="Piyush Mohapatra, home">
+      <span class="pm">PM</span>
+      <span class="mono where">piyush-mptra.com</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul>
+        {items.map((i) => <li><a href={i.href}>{i.label}</a></li>)}
+      </ul>
+    </nav>
+    <button class="cmd mono" type="button" data-palette-open aria-haspopup="dialog">
+      <span class="kbd">⌘K</span><span class="cmd-label">Jump to</span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in srgb, var(--paper) 82%, transparent);
+    backdrop-filter: blur(10px) saturate(1.2);
+    -webkit-backdrop-filter: blur(10px) saturate(1.2);
+    border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  }
+  .row { display: flex; align-items: center; gap: 24px; height: 56px; }
+  .mark { display: flex; align-items: baseline; gap: 12px; text-decoration: none; }
+  .pm { font-weight: 900; font-stretch: 125%; font-size: 18px; letter-spacing: -0.02em; }
+  .where { color: var(--muted); }
+  nav { margin-left: auto; }
+  ul { display: flex; gap: clamp(14px, 2.4vw, 32px); list-style: none; margin: 0; padding: 0; }
+  ul a { text-decoration: none; font-weight: 500; font-size: 15px; font-stretch: 90%; transition: font-stretch 0.3s var(--ease); }
+  ul a:hover { font-stretch: 125%; }
+  .cmd {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px;
+  }
+  .cmd:hover { border-color: var(--accent); color: var(--accent); }
+  .kbd { font-weight: 500; }
+  @media (max-width: 720px) {
+    .where, .cmd-label { display: none; }
+    ul { gap: 14px; }
+    ul a { font-size: 14px; }
+    .row { gap: 14px; }
+  }
+  @media (max-width: 420px) {
+    nav li:nth-child(3) { display: none; }
+  }
+</style>
