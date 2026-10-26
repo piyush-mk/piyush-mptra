@@ -42,7 +42,7 @@ export function initKinetic() {
         const r = s.getBoundingClientRect();
         const d = Math.hypot(px - (r.left + r.width / 2), py - (r.top + r.height / 2));
         const k = Math.max(0, 1 - d / reach);
-        set(s, 90 + k * 35, 650 + k * 250, k > 0.8);
+        set(s, 97 + k * 15, 800 + k * 100, k > 0.85);
       }
     }
   };
@@ -55,16 +55,19 @@ export function initKinetic() {
   }
   document.addEventListener("pointerleave", () => { px = py = -1; groups.forEach((g) => (g.near = false)); });
 
-  // Idle wave for groups that ask for it, and a rest state for the others.
-  let t = 0;
-  const idle = () => {
-    t += 0.035;
+  // One gentle wave across "idle" groups on load, then everything settles back to rest.
+  // Letters away from the pointer always ease back to their normal width.
+  const introEnd = performance.now() + 1600;
+  const rest = () => {
+    const now = performance.now();
+    const intro = now < introEnd;
     for (const g of groups) {
       if (!g.visible || g.near) continue;
       g.letters.forEach((s, i) => {
-        if (g.idle) {
-          const k = (Math.sin(t - i * 0.45) + 1) / 2;
-          set(s, 78 + k * 40, null, false);
+        if (g.idle && intro) {
+          const phase = (introEnd - now) / 1600; // 1 → 0
+          const k = Math.max(0, Math.sin((1 - phase) * Math.PI * 2 - i * 0.35));
+          set(s, 100 + k * 10 * phase, null, false);
         } else if (s.style.fontVariationSettings) {
           s.style.fontVariationSettings = "";
           s.style.fontWeight = "";
@@ -72,7 +75,7 @@ export function initKinetic() {
         }
       });
     }
-    requestAnimationFrame(idle);
+    requestAnimationFrame(rest);
   };
-  if (!reduce) requestAnimationFrame(idle);
+  if (!reduce) requestAnimationFrame(rest);
 }
